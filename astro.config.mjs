@@ -10,6 +10,7 @@ export default defineConfig({
 			title: 'wayID Docs',
 			components: {
 				ThemeProvider: './src/components/ThemeProvider.astro',
+				ThemeSelect: './src/components/ThemeSelect.astro',
 			},
 			logo: {
 				light: './src/assets/logo-light.svg',
