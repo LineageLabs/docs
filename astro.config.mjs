@@ -8,6 +8,12 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'wayID Docs',
+			head: [
+				{
+					tag: 'script',
+					content: `if (!localStorage.getItem('starlight-theme')) { document.documentElement.dataset.theme = 'light'; }`,
+				},
+			],
 			logo: {
 				light: './src/assets/logo-light.svg',
 				dark: './src/assets/logo-dark.svg',
