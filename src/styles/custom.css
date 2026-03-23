@@ -40,7 +40,10 @@
 	--sl-color-text-accent: #2886E6;
 }
 
-/* Logo text next to icon — ensure header icons/text use navy in light mode */
+/* Search box border in light mode */
+:root[data-theme='light'] site-search {
+	--pagefind-ui-border: #FAFAFA;
+}
 
 /* Logo text next to icon */
 .site-title .group {
