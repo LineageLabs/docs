@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Light mode */
+:root[data-theme='light'],
+:root {
+	--sl-color-accent-low: rgba(114, 103, 226, 0.1);
+	--sl-color-accent: #7267E2;
+	--sl-color-accent-high: #0E1233;
+	--sl-color-white: #0E1233;
+	--sl-color-gray-1: #444444;
+	--sl-color-gray-2: #666666;
+	--sl-color-gray-3: #999999;
+	--sl-color-gray-4: #cccccc;
+	--sl-color-gray-5: #E8E5DE;
+	--sl-color-gray-6: #f0ede7;
+	--sl-color-black: #E8E5DE;
+	--sl-color-bg-nav: #0E1233;
+	--sl-color-bg-sidebar: #f0ede7;
+	--sl-color-hairline-light: #d4d1c9;
+	--sl-color-text-accent: #006CDB;
+	--sl-font: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Dark mode */
+:root[data-theme='dark'] {
+	--sl-color-accent-low: rgba(180, 175, 231, 0.1);
+	--sl-color-accent: #B4AFE7;
+	--sl-color-accent-high: #FAFAFA;
+	--sl-color-white: #E8E5DE;
+	--sl-color-gray-1: rgba(232, 229, 222, 0.8);
+	--sl-color-gray-2: rgba(232, 229, 222, 0.6);
+	--sl-color-gray-3: rgba(232, 229, 222, 0.4);
+	--sl-color-gray-4: rgba(232, 229, 222, 0.2);
+	--sl-color-gray-5: #1a1e45;
+	--sl-color-gray-6: #0E1233;
+	--sl-color-black: #0E1233;
+	--sl-color-bg-nav: #080b22;
+	--sl-color-bg-sidebar: #0E1233;
+	--sl-color-hairline-light: #2a2d54;
+	--sl-color-text-accent: #2886E6;
+}
+
+/* Header bar — always brand navy */
+header.header {
+	background-color: #0E1233 !important;
+	border-bottom-color: #2a2d54 !important;
+}
+
+starlight-theme-select {
+	--sl-color-white: #E8E5DE;
+}
+
+/* Logo text next to icon */
+.site-title .group {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	letter-spacing: -0.07em;
+}

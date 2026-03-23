@@ -7,7 +7,12 @@ export default defineConfig({
 	site: 'https://docs.way.je',
 	integrations: [
 		starlight({
-			title: 'Lineage Docs',
+			title: 'wayID Docs',
+			logo: {
+				light: './src/assets/logo-light.svg',
+				dark: './src/assets/logo-dark.svg',
+				replacesTitle: true,
+			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/LineageLabs/docs' }],
 			sidebar: [
 				{
@@ -17,6 +22,7 @@ export default defineConfig({
 					],
 				},
 			],
+			customCss: ['./src/styles/custom.css'],
 		}),
 	],
 });
