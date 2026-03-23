@@ -1,6 +1,7 @@
-# Getting Started
-
-This guide will help you get up and running with Lineage.
+---
+title: Getting Started
+description: Get up and running with Lineage.
+---
 
 ## Prerequisites
 

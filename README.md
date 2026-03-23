@@ -2,16 +2,16 @@
 
 Public documentation hub — [docs.way.je](https://docs.way.je)
 
-Built with [MkDocs Material](https://squidfund.github.io/mkdocs-material/). Deployed via GitHub Pages.
+Built with [Starlight](https://starlight.astro.build/). Deployed via GitHub Pages.
 
 ## Local development
 
 ```bash
-pip install -r requirements.txt
-mkdocs serve
+npm install
+npm run dev
 ```
 
-Then open http://localhost:8000.
+Then open http://localhost:4321.
 
 ## Deployment
 
@@ -21,4 +21,4 @@ Pushes to `main` trigger the GitHub Actions workflow which builds and deploys to
 
 Add a CNAME record pointing `docs.way.je` to `lineagelabs.github.io`.
 
-In the repo's GitHub Settings → Pages, set the custom domain to `docs.way.je` and enable "Enforce HTTPS".
+In the repo's GitHub Settings > Pages, set the custom domain to `docs.way.je` and enable "Enforce HTTPS".
