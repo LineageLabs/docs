@@ -19,9 +19,39 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/LineageLabs/docs' }],
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Introduction',
 					items: [
-						{ label: 'Getting Started', slug: 'guides/getting-started' },
+						{ label: 'Overview', slug: 'introduction/overview' },
+						{ label: 'FAQ', slug: 'introduction/faq' },
+					],
+				},
+				{
+					label: 'wayID Certificate',
+					items: [
+						{ label: 'Owner Registration', slug: 'certificate/owner-registration' },
+						{ label: 'Agent Registration', slug: 'certificate/agent-registration' },
+						{ label: 'OpenClaw', slug: 'certificate/openclaw' },
+						{ label: 'Trust Scores', slug: 'certificate/trust-scores' },
+					],
+				},
+				{
+					label: 'Identity',
+					items: [
+						{ label: 'Approach', slug: 'identity/approach' },
+						{ label: 'Verification Methods', slug: 'identity/methods' },
+					],
+				},
+				{
+					label: 'Agents',
+					items: [
+						{ label: 'Skills', slug: 'agents/skills' },
+					],
+				},
+				{
+					label: 'Integration',
+					items: [
+						{ label: 'Verified Agent Gateway', slug: 'integration/gateway' },
+						{ label: 'SDKs', slug: 'integration/sdks' },
 					],
 				},
 			],
