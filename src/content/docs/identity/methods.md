@@ -3,54 +3,77 @@ title: Verification Methods
 description: Identity verification methods supported by wayID.
 ---
 
-wayID supports multiple identity verification methods. Each method provides a different level of assurance and contributes differently to your agent's [trust score](/certificate/trust-scores/).
+wayID supports multiple identity verification methods. Each method provides a different level of assurance and contributes **3 points** to your agent's [trust score](/certificate/trust-scores/).
 
-## eID
+## MitID (eID)
 
-Electronic identity (eID) verification uses government-issued identity documents or regulated identity providers. This is the highest-assurance verification method available on wayID.
+[MitID](https://www.mitid.dk/) is the Danish national electronic identity system. It is the highest-assurance verification method currently available on wayID.
 
-wayID integrates with eID providers through a privacy-preserving flow:
+wayID integrates with MitID through [Criipto](https://criipto.com/) using OpenID Connect (OIDC):
 
-1. You are redirected to the eID provider to authenticate.
-2. The provider confirms your identity and returns a signed attestation.
-3. wayID records the attestation result (verified/not verified) without storing any personal data.
+1. You are redirected to the MitID login flow.
+2. MitID confirms your identity and returns a signed attestation.
+3. wayID records the verification result and extracts your nationality (ISO country code). No other personal data is stored.
 
-Supported eID providers and regions are expanding. Check the wayID dashboard for current availability.
+Additional eID providers and regions are planned. Check the wayID dashboard for current availability.
 
 ## Concordium
 
-[Concordium](https://concordium.com) is a layer-1 blockchain with built-in identity verification. wayID uses Concordium's zero-knowledge proof infrastructure to verify that an owner is a real, unique person.
+[Concordium](https://concordium.com) is a layer-1 blockchain with built-in identity verification. wayID uses Concordium's zero-knowledge proof infrastructure to verify that an owner is a real, unique person — without running a Concordium node.
 
-How it works:
+### How it works
 
 1. You create a Concordium account (if you don't have one), which requires a one-time identity verification through a Concordium-approved identity provider.
-2. You link your Concordium account to wayID.
-3. wayID requests a zero-knowledge proof from Concordium — for example, proving that you are a unique person without revealing your name or any other personal data.
-4. The proof is verified and recorded on your wayID account.
+2. You connect your Concordium wallet to wayID.
+3. wayID requests a zero-knowledge proof — specifically, a `RevealAttribute` proof for the `idDocIssuer` attribute, which reveals your nationality without exposing any other personal data.
+4. The proof is verified off-chain and recorded on your wayID account.
 
-Concordium proofs are reusable. Once your Concordium account is linked, you do not need to re-verify.
+### Wallet support
+
+| Wallet | Connection method |
+|--------|------------------|
+| **Concordium Browser Wallet** (Chrome/Firefox) | Browser extension — auto-detected |
+| **CryptoX Wallet** (mobile) | WalletConnect v2 via Reown — scan QR code |
+| **Concordium Mobile Wallet** | WalletConnect v2 via Reown — scan QR code |
+
+### Requirements
+
+- **Mainnet only** — Testnet identities have no trust value and are not accepted.
+- Issuers 0–4 are accepted (all mainnet-approved Concordium identity providers).
+
+### What is stored
+
+- **Nationality** — 2-letter ISO 3166-1 alpha-2 code (e.g. `DK`)
+- **Proof reference** — Hash of the ZK proof (for audit, not PII)
+- **Concordium account** — Wallet address used for the proof
+
+No personal data (name, date of birth, etc.) is transmitted to or stored by wayID.
 
 ## World ID
 
-[World ID](https://worldcoin.org/world-id) provides proof-of-humanity verification using biometric uniqueness checks. wayID supports World ID as a verification method.
+[World ID](https://worldcoin.org/world-id) provides proof-of-humanity verification using biometric uniqueness checks.
 
-_More details coming soon._
+_Coming soon._
 
 ## Self
 
-[Self](https://self.xyz) is a self-sovereign identity protocol. wayID supports Self for privacy-preserving identity verification.
+[Self](https://self.xyz) is a self-sovereign identity protocol for privacy-preserving identity verification.
 
-_More details coming soon._
+_Coming soon._
 
 ## Comparing methods
 
-| Method | Assurance level | Privacy model | Availability |
-|---|---|---|---|
-| eID | High | Selective disclosure | Region-dependent |
-| Concordium | Medium–High | Zero-knowledge proofs | Global |
-| World ID | Medium | Biometric uniqueness | Global |
-| Self | Medium | Self-sovereign | Coming soon |
+| Method | Assurance level | Privacy model | Availability | Points |
+|--------|----------------|---------------|-------------|--------|
+| MitID (eID) | High | Selective disclosure via OIDC | Denmark | 3 |
+| Concordium | Medium–High | Zero-knowledge proofs | Global | 3 |
+| World ID | Medium | Biometric uniqueness | Global | Coming soon |
+| Self | Medium | Self-sovereign | Coming soon | Coming soon |
 
 ## Using multiple methods
 
-You can verify your identity using more than one method. Each additional verification strengthens your [trust score](/certificate/trust-scores/). For example, an owner who has completed both eID and Concordium verification will have a higher trust score than one who has completed only one.
+You can verify your identity using more than one method. Each verification adds 3 points to your [trust score](/certificate/trust-scores/). An owner who has completed both MitID and Concordium verification (6 points) qualifies for an **A grade** — the highest trust tier.
+
+## Social verification
+
+In addition to identity verification, you can verify social accounts (X, Bluesky, GitHub, website) to further strengthen your trust score. See [Social Verification](/identity/social-verification/) for details.

@@ -5,49 +5,63 @@ description: How wayID calculates and presents trust scores for agents.
 
 A wayID trust score is a composite metric that summarizes how trustworthy a registered agent is. Consumers can query an agent's trust score before deciding to interact with it.
 
-## What goes into a trust score
+## Scoring system
 
-Trust scores combine multiple signals into a single value:
+Trust scores are calculated from two types of signals:
 
-### Identity verification
+| Signal | Points |
+|--------|--------|
+| Identity verification (Concordium or MitID) | **3 points** each |
+| Verified social link (X, Bluesky, GitHub, website) | **1 point** each |
 
-The strength of the owner's identity verification is the foundation of the trust score. Stronger verification methods contribute more:
+**Maximum score: 10 points** (e.g. 2 identity verifications + 4 social links).
 
-- **eID verification** — Government-issued electronic identity (highest weight)
-- **Concordium zero-knowledge proof** — Cryptographic proof of humanity
-- **OAuth login only** — Basic account creation (lowest weight)
+## Grades
 
-### Agent history
+Scores map to a letter grade:
 
-An agent's track record contributes to its score over time:
+| Grade | Points | Example |
+|-------|--------|---------|
+| **A** | 6+ | 1 identity + 3 social links |
+| **B** | 4–5 | 1 identity + 1–2 social links |
+| **C** | 2–3 | 1 identity alone |
+| **D** | 1 | 1 social link only |
+| **E** | 0 | No verifications |
 
-- **Registration age** — How long the agent has been registered
-- **Revocation history** — Whether previous agents under the same owner have been revoked
-- **Certificate validity** — Whether the current certificate is active and unmodified
+### Identity verification cap
 
-### Skill registration
+Without at least one identity verification, the maximum achievable grade is **C** — regardless of how many social links are verified. This reflects the higher trust value of cryptographic identity proof compared to social presence alone.
 
-Agents with published, well-documented skills on ClawHub receive a score boost:
+For example, an owner with 4 verified social links (4 points) would normally receive a grade B, but without identity verification, the grade is capped at C.
 
-- **Number of published skills** — More skills indicate a more established agent
-- **Skill quality signals** — Install counts, versioning history
+## What counts as identity verification
 
-### Owner profile
+The following methods contribute 3 points each:
 
-Optional public profile information can contribute to the score:
+- **Concordium** — Zero-knowledge proof via Concordium wallet
+- **MitID** — Danish government eID via Criipto
 
-- **Verified website** — A linked, verified website
-- **Social media presence** — Connected social accounts
+See [Verification Methods](/identity/methods/) for details on each provider.
 
-## How scores are presented
+## What counts as a verified social link
 
-Trust scores are presented as a composite value on the agent's wayID certificate. Consumers can inspect the certificate to see both the overall score and the individual components that contribute to it.
+Each verified social link contributes 1 point. Supported platforms:
+
+- **X (Twitter)** — Post a tweet containing your verification token
+- **Bluesky** — Post on Bluesky with your verification token
+- **GitHub** — Create a public Gist with your verification token
+- **Website** — Upload a [`.well-known/wayid.yml`](/specifications/well-known/) file
+
+See [Social Verification](/identity/social-verification/) for setup instructions.
 
 ## Score updates
 
-Trust scores are dynamic. They update when:
+Trust scores are dynamic. They recalculate when:
 
 - The owner completes additional identity verification
-- New skills are published or updated
-- The agent's registration ages
-- Profile information is added or changed
+- A social link is verified or removed
+- Profile information changes
+
+## How scores are presented
+
+Trust scores appear on the agent's wayID certificate page. Consumers can inspect the overall grade and see which verification signals contribute to it.

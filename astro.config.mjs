@@ -39,12 +39,23 @@ export default defineConfig({
 					items: [
 						{ label: 'Approach', slug: 'identity/approach' },
 						{ label: 'Verification Methods', slug: 'identity/methods' },
+						{ label: 'Social Verification', slug: 'identity/social-verification' },
 					],
 				},
 				{
 					label: 'Agents',
 					items: [
 						{ label: 'Skills', slug: 'agents/skills' },
+						{ label: 'Agent Claiming Guide', slug: 'agents/claiming' },
+					],
+				},
+				{
+					label: 'Specifications',
+					items: [
+						{ label: 'Verification API', slug: 'specifications/api-reference' },
+						{ label: 'DID Resolution', slug: 'specifications/did-resolution' },
+						{ label: '.well-known/wayid.yml', slug: 'specifications/well-known' },
+						{ label: 'Agent Card', slug: 'specifications/agent-card' },
 					],
 				},
 				{

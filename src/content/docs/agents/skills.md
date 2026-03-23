@@ -1,44 +1,98 @@
 ---
 title: Skills
-description: Agent skills — packaged capabilities for AI agents.
+description: ClawHub skills for wayID — give your AI agent a verifiable identity.
 ---
 
-Skills are the building blocks of what an AI agent can do. In the wayID ecosystem, skills are packaged as AgentSkills bundles and published on [ClawHub](https://clawhub.ai).
+Skills are packaged capabilities that teach your AI agent how to do specific things. In the wayID ecosystem, skills are published on [ClawHub](https://clawhub.ai) and installed into your agent's project as `SKILL.md` files — Markdown instruction sets that guide agent behaviour.
 
-## What is a skill?
+## wayID skills
 
-A skill is a self-contained capability that an agent can perform. Skills are modular — an agent can have one skill or many, and skills can be composed together.
+ClawHub ships the following wayID skills out of the box:
 
-Each skill includes:
+| Skill | Command | Description |
+|-------|---------|-------------|
+| **whoareyou** | `/whoareyou` | Display your agent's verified wayID identity card |
+| **who** | `/who` | Shorthand alias for `/whoareyou` |
+| **way** | `/way` | Shorthand alias for `/whoareyou` |
+| **wayid-claim** | _internal_ | Register your agent with wayID and receive a provenance certificate |
 
-- **A manifest** describing what the skill does, its inputs, and its outputs
-- **The implementation** — the code that performs the skill
-- **Metadata** for discovery — description, tags, and version information
+### `/whoareyou` (and `/who`, `/way`)
+
+When a user invokes this skill, your agent:
+
+1. Reads its Ed25519 public key from `~/.openclaw/identity/device.json`
+2. Looks up its wayID certificate via `GET https://way.je/api/v1/agent/{publicKey}`
+3. Fetches the full identity card via `GET https://way.je/api/agents/{wayidDid}/card`
+4. Displays a formatted identity card:
+
+```
+🛡️ Acme Bot @acme-bot
+AI assistant for Acme Corp
+
+✅ Verified — Concordium ID
+Owned by Jane Smith (@janesmith)
+
+View Certificate → https://way.je/agent/wayid:agent:...
+```
+
+If the agent is not yet verified, it shows a warning instead of the verified badge.
+
+`/who` and `/way` are convenience aliases — they behave identically to `/whoareyou`.
+
+### `wayid-claim`
+
+This skill handles the one-time registration of your agent with wayID. It is not user-invocable — it runs as part of the claiming flow:
+
+1. The agent owner generates a claim token at `https://way.je/claim`
+2. The agent signs the token with its Ed25519 private key
+3. The signed token is submitted to `POST https://way.je/api/v1/claim`
+4. On success, the agent receives a wayID DID certificate (`wayid:agent:{24-char-base58}`)
+
+After claiming, anyone can verify the agent at `https://way.je/agent/{did}`.
 
 ## Installing skills
 
-Use the ClawHub CLI to add a skill to your agent:
+Install a skill from ClawHub:
 
 ```bash
 npx clawhub@latest install <skill-name>
 ```
 
-Skills are installed as local folders in your agent's project, similar to how npm packages work.
+For example, to install the wayID identity card skill:
+
+```bash
+npx clawhub@latest install whoareyou
+```
+
+Skills are installed as folders in your agent's project under `skills/`, each containing a `SKILL.md` file and metadata. Installed skills are tracked in `.clawhub/lock.json`.
+
+### SKILL.md format
+
+Each skill is defined by a `SKILL.md` file with YAML frontmatter:
+
+```markdown
+---
+name: whoareyou
+version: 1.0.0
+description: Show your verified wayID identity card when a user asks who you are
+user-invocable: true
+---
+
+# /whoareyou — Verified Identity Card
+
+When a user types `/whoareyou`, display your verified wayID identity card...
+```
+
+Key fields:
+
+- **name** — unique identifier, used as the slash command
+- **version** — semantic version
+- **description** — short summary (used for discovery search)
+- **user-invocable** — `true` if users can trigger it directly, `false` for internal skills
 
 ## Discovering skills
 
 Browse available skills on [ClawHub](https://clawhub.ai). Skills are indexed using vector search, so you can search by describing what you need in natural language.
-
-## Publishing your own skills
-
-If your agent has a capability that others might find useful, you can publish it as a skill on ClawHub.
-
-### Guidelines
-
-- **One skill, one job** — Keep skills focused on a single capability. If a skill does too many things, split it up.
-- **Describe it well** — The description is used for vector search. Be specific about what the skill does, what inputs it expects, and what it returns.
-- **Use semantic versioning** — Publish updates as new versions (`1.0.0`, `1.1.0`, `2.0.0`) so consumers can pin to a known-good version.
-- **Include examples** — Show how the skill is used in practice. This helps other developers integrate it quickly.
 
 ## Skills and trust
 
