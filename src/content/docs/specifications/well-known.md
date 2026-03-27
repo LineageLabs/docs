@@ -1,31 +1,36 @@
 ---
-title: .well-known/wayid.yml
+title: .well-known/wayid.toml
 description: Website verification using the .well-known standard (RFC 8615).
 ---
 
-wayID uses the [IETF RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615) `.well-known` standard for website ownership verification. By placing a `wayid.yml` file at a well-known URI on your domain, you prove that you control the website.
+wayID uses the [IETF RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615) `.well-known` standard for website ownership verification. By placing a `wayid.toml` file at a well-known URI on your domain, you prove that you control the website.
 
 ## How it works
 
 1. On the wayID dashboard, add your website as a social link.
 2. wayID generates a verification token (format: `wayid-verify-{16-hex-chars}`).
-3. You create a file at `https://yourdomain.com/.well-known/wayid.yml` with the token.
+3. You create a file at `https://yourdomain.com/.well-known/wayid.toml` with the token.
 4. wayID fetches the file and confirms the token matches.
 
 ## File format
 
-Create a file named `wayid.yml` in the `/.well-known/` directory of your website's root:
+Create a file named `wayid.toml` in the `/.well-known/` directory of your website's root:
 
-```yaml
-wayid:
-  version: 1
-  verification_token: "wayid-verify-a1b2c3d4e5f6g7h8"
+```toml
+# wayID domain verification file
+# See https://way.je/docs/verify-website for details
+
+[wayid]
+version = 1
+verification_token = "wayid-verify-a1b2c3d4e5f6g7h8"
 ```
 
 | Field | Required | Description |
 |-------|----------|-------------|
 | `version` | Yes | Must be `1` |
 | `verification_token` | Yes | The token provided by wayID during setup |
+
+The `[permissions]` and `[agent]` section namespaces are reserved for future use.
 
 ## Verification rules
 
@@ -36,7 +41,7 @@ wayID performs the following checks:
    - `https://www.{domain}`
    - `http://{domain}`
 
-2. **File fetch** — wayID requests `{base}/.well-known/wayid.yml` from each candidate URL until one succeeds.
+2. **File fetch** — wayID requests `{base}/.well-known/wayid.toml` from each candidate URL until one succeeds.
 
 3. **Token match** — The file contents must contain your exact verification token.
 
@@ -48,12 +53,15 @@ Verification requests have a 10-second timeout and retry up to 3 times with expo
 
 If your domain is `example.com` and your verification token is `wayid-verify-a1b2c3d4e5f6g7h8`, create this file:
 
-**URL:** `https://example.com/.well-known/wayid.yml`
+**URL:** `https://example.com/.well-known/wayid.toml`
 
-```yaml
-wayid:
-  version: 1
-  verification_token: "wayid-verify-a1b2c3d4e5f6g7h8"
+```toml
+# wayID domain verification file
+# See https://way.je/docs/verify-website for details
+
+[wayid]
+version = 1
+verification_token = "wayid-verify-a1b2c3d4e5f6g7h8"
 ```
 
 ## Token generation
@@ -63,7 +71,7 @@ Verification tokens are deterministic HMAC-SHA256 signatures derived from your u
 ## Common issues
 
 **File not found (404)**
-Ensure the file is served at the exact path `/.well-known/wayid.yml`. Some hosting platforms require explicit configuration to serve files from `.well-known/` directories.
+Ensure the file is served at the exact path `/.well-known/wayid.toml`. Some hosting platforms require explicit configuration to serve files from `.well-known/` directories.
 
 **HTTPS required**
 wayID tries HTTPS first. If your site only serves HTTP, verification will still work as a fallback, but HTTPS is strongly recommended.

@@ -12,7 +12,7 @@ Social verification lets you prove ownership of accounts on external platforms. 
 | **X (Twitter)** | Post a tweet containing your verification token |
 | **Bluesky** | Post on Bluesky containing your verification token |
 | **GitHub** | Create a public Gist containing your verification token |
-| **Website** | Upload a `.well-known/wayid.yml` file to your domain |
+| **Website** | Upload a `.well-known/wayid.toml` file to your domain |
 
 ## How it works
 
@@ -57,15 +57,19 @@ Paste the Gist URL into the dashboard. wayID fetches the Gist via the GitHub API
 
 ### Website
 
-Create a file at `https://yourdomain.com/.well-known/wayid.yml`:
+Create a file at `https://yourdomain.com/.well-known/wayid.toml`:
 
-```yaml
-wayid:
-  version: 1
-  verification_token: "wayid-verify-a1b2c3d4e5f6g7h8"
+```toml
+# wayID domain verification file
+# See https://way.je/docs/verify-website for details
+
+[wayid]
+version = 1
+user_id = "{your-user-uuid}"
+verification_token = "wayid-verify-a1b2c3d4e5f6g7h8"
 ```
 
-See the [.well-known/wayid.yml specification](/specifications/well-known/) for full details on file format and URL resolution.
+See the [.well-known/wayid.toml specification](/specifications/well-known/) for full details on file format and URL resolution.
 
 ## Verification tokens
 

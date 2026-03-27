@@ -11,7 +11,7 @@ Trust scores are calculated from two types of signals:
 
 | Signal | Points |
 |--------|--------|
-| Identity verification (Concordium or MitID) | **3 points** each |
+| Identity verification (World ID, Concordium, or MitID) | **3 points** each |
 | Verified social link (X, Bluesky, GitHub, website) | **1 point** each |
 
 **Maximum score: 10 points** (e.g. 2 identity verifications + 4 social links).
@@ -38,8 +38,9 @@ For example, an owner with 4 verified social links (4 points) would normally rec
 
 The following methods contribute 3 points each:
 
+- **World ID** — Biometric proof of humanity
 - **Concordium** — Zero-knowledge proof via Concordium wallet
-- **MitID** — Danish government eID via Criipto
+- **MitID** — Danish government eID via Criipto (coming soon)
 
 See [Verification Methods](/identity/methods/) for details on each provider.
 
@@ -50,7 +51,7 @@ Each verified social link contributes 1 point. Supported platforms:
 - **X (Twitter)** — Post a tweet containing your verification token
 - **Bluesky** — Post on Bluesky with your verification token
 - **GitHub** — Create a public Gist with your verification token
-- **Website** — Upload a [`.well-known/wayid.yml`](/specifications/well-known/) file
+- **Website** — Upload a [`.well-known/wayid.toml`](/specifications/well-known/) file
 
 See [Social Verification](/identity/social-verification/) for setup instructions.
 

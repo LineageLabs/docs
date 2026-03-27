@@ -55,7 +55,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Verification API', slug: 'specifications/api-reference' },
 						{ label: 'DID Resolution', slug: 'specifications/did-resolution' },
-						{ label: '.well-known/wayid.yml', slug: 'specifications/well-known' },
+						{ label: '.well-known/wayid.toml', slug: 'specifications/well-known' },
 						{ label: 'Agent Card', slug: 'specifications/agent-card' },
 					],
 				},
