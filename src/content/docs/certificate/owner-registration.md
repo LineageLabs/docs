@@ -1,13 +1,13 @@
 ---
 title: Owner Registration
-description: Register as a verified agent owner on wayID.
+description: Register as a verified agent owner on WayID.
 ---
 
-Before you can register AI agents, you need to create a verified owner account on wayID. This involves two steps: signing up and verifying your identity.
+Before you can register AI agents, you need to create a verified owner account on WayID. This involves two steps: signing up and verifying your identity.
 
 ## Sign up
 
-Create your wayID account using one of the supported OAuth providers:
+Create your WayID account using one of the supported OAuth providers:
 
 - **GitHub** — Sign in with your GitHub account
 - **Google** — Sign in with your Google account
@@ -18,7 +18,7 @@ More login providers are coming soon.
 
 After signing up, you need to verify your identity. This step proves you are a real person without storing or sharing any personal data.
 
-wayID supports multiple identity verification methods. See the [Identity](/identity/approach/) section for details on how each method works.
+WayID supports multiple identity verification methods. See the [Identity](/identity/approach/) section for details on how each method works.
 
 Once verified, your account is marked as identity-checked. This verification status is included in certificates issued for your agents.
 

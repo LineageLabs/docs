@@ -1,27 +1,27 @@
 ---
 title: Skills
-description: ClawHub skills for wayID — give your AI agent a verifiable identity.
+description: ClawHub skills for WayID — give your AI agent a verifiable identity.
 ---
 
-Skills are packaged capabilities that teach your AI agent how to do specific things. In the wayID ecosystem, skills are published on [ClawHub](https://clawhub.ai) and installed into your agent's project as `SKILL.md` files — Markdown instruction sets that guide agent behaviour.
+Skills are packaged capabilities that teach your AI agent how to do specific things. In the WayID ecosystem, skills are published on [ClawHub](https://clawhub.ai) and installed into your agent's project as `SKILL.md` files — Markdown instruction sets that guide agent behaviour.
 
-## wayID skills
+## WayID skills
 
-ClawHub ships the following wayID skills out of the box:
+ClawHub ships the following WayID skills out of the box:
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| **whoareyou** | `/whoareyou` | Display your agent's verified wayID identity card |
+| **whoareyou** | `/whoareyou` | Display your agent's verified WayID identity card |
 | **who** | `/who` | Shorthand alias for `/whoareyou` |
 | **way** | `/way` | Shorthand alias for `/whoareyou` |
-| **wayid-claim** | _internal_ | Register your agent with wayID and receive a provenance certificate |
+| **wayid-claim** | _internal_ | Register your agent with WayID and receive a provenance certificate |
 
 ### `/whoareyou` (and `/who`, `/way`)
 
 When a user invokes this skill, your agent:
 
 1. Reads its Ed25519 public key from `~/.openclaw/identity/device.json`
-2. Looks up its wayID certificate via `GET https://way.je/api/v1/agent/{publicKey}`
+2. Looks up its WayID certificate via `GET https://way.je/api/v1/agent/{publicKey}`
 3. Fetches the full identity card via `GET https://way.je/api/agents/{wayidDid}/card`
 4. Displays a formatted identity card:
 
@@ -41,12 +41,12 @@ If the agent is not yet verified, it shows a warning instead of the verified bad
 
 ### `wayid-claim`
 
-This skill handles the one-time registration of your agent with wayID. It is not user-invocable — it runs as part of the claiming flow:
+This skill handles the one-time registration of your agent with WayID. It is not user-invocable — it runs as part of the claiming flow:
 
 1. The agent owner generates a claim token at `https://way.je/claim`
 2. The agent signs the token with its Ed25519 private key
 3. The signed token is submitted to `POST https://way.je/api/v1/claim`
-4. On success, the agent receives a wayID DID certificate (`wayid:agent:{24-char-base58}`)
+4. On success, the agent receives a WayID DID certificate (`wayid:agent:{24-char-base58}`)
 
 After claiming, anyone can verify the agent at `https://way.je/agent/{did}`.
 
@@ -58,7 +58,7 @@ Install a skill from ClawHub:
 npx clawhub@latest install <skill-name>
 ```
 
-For example, to install the wayID identity card skill:
+For example, to install the WayID identity card skill:
 
 ```bash
 npx clawhub@latest install whoareyou
@@ -74,13 +74,13 @@ Each skill is defined by a `SKILL.md` file with YAML frontmatter:
 ---
 name: whoareyou
 version: 1.0.0
-description: Show your verified wayID identity card when a user asks who you are
+description: Show your verified WayID identity card when a user asks who you are
 user-invocable: true
 ---
 
 # /whoareyou — Verified Identity Card
 
-When a user types `/whoareyou`, display your verified wayID identity card...
+When a user types `/whoareyou`, display your verified WayID identity card...
 ```
 
 Key fields:
@@ -96,6 +96,6 @@ Browse available skills on [ClawHub](https://clawhub.ai). Skills are indexed usi
 
 ## Skills and trust
 
-When an agent has published skills on ClawHub, those skills are linked to the agent's DID and become part of its [wayID certificate](/certificate/agent-registration/). Consumers can inspect an agent's skills as part of evaluating whether to trust it.
+When an agent has published skills on ClawHub, those skills are linked to the agent's DID and become part of its [WayID certificate](/certificate/agent-registration/). Consumers can inspect an agent's skills as part of evaluating whether to trust it.
 
 Published skills also contribute to the agent's [trust score](/certificate/trust-scores/).

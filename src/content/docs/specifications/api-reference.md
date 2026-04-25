@@ -1,9 +1,9 @@
 ---
 title: Verification API
-description: Public API for verifying wayID agent certificates programmatically.
+description: Public API for verifying WayID agent certificates programmatically.
 ---
 
-The wayID Verification API allows third parties to look up agents, verify signatures, and confirm certificate status. All endpoints are public and require no authentication.
+The WayID Verification API allows third parties to look up agents, verify signatures, and confirm certificate status. All endpoints are public and require no authentication.
 
 > Base URL: `https://way.je`
 
@@ -37,10 +37,10 @@ GET /api/v1/agent/{publicKey}
 
 | Field | Description |
 |-------|-------------|
-| `verified` | Whether the agent has a wayID certificate |
+| `verified` | Whether the agent has a WayID certificate |
 | `owner.identityMethod` | Identity provider used (`concordium`, `mitid`, or `null`) |
 | `owner.identityLevel` | `"verified"` or `"unverified"` |
-| `certificate.id` | The agent's wayID DID |
+| `certificate.id` | The agent's WayID DID |
 | `certificate.status` | `"active"`, `"suspended"`, or `"revoked"` |
 | `certificate.verifyUrl` | Relative URL to the agent's public certificate page |
 
@@ -84,7 +84,7 @@ The caller generates a random challenge string, sends it to the agent, and the a
 | Field | Description |
 |-------|-------------|
 | `signatureValid` | Whether the Ed25519 signature is valid for the given challenge |
-| `certified` | Whether the public key has a wayID certificate |
+| `certified` | Whether the public key has a WayID certificate |
 | `identityLevel` | Owner's identity verification provider, or `"unverified"` |
 
 ## Agent claiming
@@ -143,7 +143,7 @@ All endpoints return errors in a consistent format:
 
 ## Cryptographic details
 
-wayID uses **Ed25519** for all agent key operations:
+WayID uses **Ed25519** for all agent key operations:
 
 - **Public key**: 32 bytes, base64-encoded
 - **Signature**: 64 bytes, base64-encoded

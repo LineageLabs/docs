@@ -16,10 +16,10 @@ Social verification lets you prove ownership of accounts on external platforms. 
 
 ## How it works
 
-1. On the wayID dashboard, add a social link (e.g. your X handle or website URL).
-2. wayID generates a verification token in the format `wayid-verify-{16-hex-chars}`.
+1. On the WayID dashboard, add a social link (e.g. your X handle or website URL).
+2. WayID generates a verification token in the format `wayid-verify-{16-hex-chars}`.
 3. You publish the token on the platform using the instructions below.
-4. Click **Verify** on the dashboard. wayID fetches your post/file and checks for the token.
+4. Click **Verify** on the dashboard. WayID fetches your post/file and checks for the token.
 
 ## Platform-specific instructions
 
@@ -28,10 +28,10 @@ Social verification lets you prove ownership of accounts on external platforms. 
 Post a public tweet containing the text:
 
 ```
-Verifying my wayID identity: wayid-verify-a1b2c3d4e5f6g7h8
+Verifying my WayID identity: wayid-verify-a1b2c3d4e5f6g7h8
 ```
 
-Paste the URL of your tweet into the wayID dashboard and click Verify. wayID fetches the tweet via Twitter's oEmbed API and checks for your token.
+Paste the URL of your tweet into the WayID dashboard and click Verify. WayID fetches the tweet via Twitter's oEmbed API and checks for your token.
 
 Your account must be public — private/protected accounts cannot be verified.
 
@@ -40,10 +40,10 @@ Your account must be public — private/protected accounts cannot be verified.
 Post on Bluesky containing the text:
 
 ```
-Verifying my wayID identity: wayid-verify-a1b2c3d4e5f6g7h8
+Verifying my WayID identity: wayid-verify-a1b2c3d4e5f6g7h8
 ```
 
-Paste the URL of your post (e.g. `https://bsky.app/profile/you.bsky.social/post/abc123`) into the dashboard. wayID resolves your handle via the AT Protocol and fetches the post content.
+Paste the URL of your post (e.g. `https://bsky.app/profile/you.bsky.social/post/abc123`) into the dashboard. WayID resolves your handle via the AT Protocol and fetches the post content.
 
 ### GitHub
 
@@ -53,14 +53,14 @@ Create a **public Gist** with any filename containing:
 wayid-verify: wayid-verify-a1b2c3d4e5f6g7h8
 ```
 
-Paste the Gist URL into the dashboard. wayID fetches the Gist via the GitHub API and searches all files for your token.
+Paste the Gist URL into the dashboard. WayID fetches the Gist via the GitHub API and searches all files for your token.
 
 ### Website
 
 Create a file at `https://yourdomain.com/.well-known/wayid.toml`:
 
 ```toml
-# wayID domain verification file
+# WayID domain verification file
 # See https://way.je/docs/verify-website for details
 
 [wayid]
@@ -77,8 +77,8 @@ Tokens are deterministic — they are derived from your user ID, platform, handl
 
 ## Retry behaviour
 
-If verification fails on the first attempt, wayID retries up to 3 times with exponential backoff (2s, 4s, 8s delays). If all retries fail, the link is marked as **pending** and retried in the background. If background retries also fail, the status changes to **unverified** and you'll be notified.
+If verification fails on the first attempt, WayID retries up to 3 times with exponential backoff (2s, 4s, 8s delays). If all retries fail, the link is marked as **pending** and retried in the background. If background retries also fail, the status changes to **unverified** and you'll be notified.
 
 ## Removing a social link
 
-You can remove a social link at any time from the dashboard. Removing a verified link reduces your trust score by 1 point. You can safely delete the tweet, Gist, or `.well-known` file after verification — wayID only checks the platform during the initial verification.
+You can remove a social link at any time from the dashboard. Removing a verified link reduces your trust score by 1 point. You can safely delete the tweet, Gist, or `.well-known` file after verification — WayID only checks the platform during the initial verification.

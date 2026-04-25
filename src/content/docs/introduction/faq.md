@@ -1,21 +1,21 @@
 ---
 title: FAQ
-description: Frequently asked questions about wayID.
+description: Frequently asked questions about WayID.
 ---
 
-## What is wayID?
+## What is WayID?
 
-wayID is trust infrastructure for AI agents. It binds verified human identities to AI agents so that consumers can check who operates an agent before trusting it — like SSL certificates, but for AI agents.
+WayID is trust infrastructure for AI agents. It binds verified human identities to AI agents so that consumers can check who operates an agent before trusting it — like SSL certificates, but for AI agents.
 
-## Who is wayID for?
+## Who is WayID for?
 
 - **Agent operators** who want to prove their agents are legitimate
 - **Consumers and platforms** who want to verify an agent's identity before interacting with it
 - **Developers** who need a trust layer for AI agent applications
 
-## What data does wayID store about me?
+## What data does WayID store about me?
 
-wayID stores only your nationality (a 2-letter country code) and a hash of your identity proof. No personal data — no name, date of birth, or identity document content — is transmitted to or stored by wayID.
+WayID stores only your nationality (a 2-letter country code) and a hash of your identity proof. No personal data — no name, date of birth, or identity document content — is transmitted to or stored by WayID.
 
 ## What identity verification methods are supported?
 
@@ -35,19 +35,19 @@ A decentralized identifier — a unique string that identifies your agent: `wayi
 
 ## How does agent claiming work?
 
-You generate a short-lived token on the wayID dashboard, give it to your agent, and the agent signs it with its Ed25519 private key. This cryptographic handshake proves the agent controls its key and binds it to your account. See the [Agent Claiming Guide](/agents/claiming/).
+You generate a short-lived token on the WayID dashboard, give it to your agent, and the agent signs it with its Ed25519 private key. This cryptographic handshake proves the agent controls its key and binds it to your account. See the [Agent Claiming Guide](/agents/claiming/).
 
 ## What is OpenClaw?
 
-The open standard wayID uses for agent identity and skill publication. Skills are published on [ClawHub](https://clawhub.ai). See [OpenClaw](/certificate/openclaw/).
+The open standard WayID uses for agent identity and skill publication. Skills are published on [ClawHub](https://clawhub.ai). See [OpenClaw](/certificate/openclaw/).
 
 ## What are skills?
 
-Packaged capabilities defined as `SKILL.md` files that teach agents how to perform tasks. wayID provides skills like `/whoareyou` (show verified identity card) and `wayid-claim` (register with wayID). See [Skills](/agents/skills/).
+Packaged capabilities defined as `SKILL.md` files that teach agents how to perform tasks. WayID provides skills like `/whoareyou` (show verified identity card) and `wayid-claim` (register with WayID). See [Skills](/agents/skills/).
 
 ## Can I revoke an agent?
 
-Yes, from the wayID dashboard. Revocation is permanent — a revoked agent cannot be re-registered with the same DID. You can also temporarily suspend an agent.
+Yes, from the WayID dashboard. Revocation is permanent — a revoked agent cannot be re-registered with the same DID. You can also temporarily suspend an agent.
 
 ## How do consumers verify my agent?
 
@@ -58,6 +58,6 @@ Three ways:
 
 See the [Verification API](/specifications/api-reference/).
 
-## Is wayID free?
+## Is WayID free?
 
-Yes. wayID is free for agent operators during the prototype phase.
+Yes. WayID is free for agent operators during the prototype phase.

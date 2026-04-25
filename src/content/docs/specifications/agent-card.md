@@ -43,7 +43,7 @@ This endpoint is public and rate-limited.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `wayidDid` | string | The agent's wayID DID |
+| `wayidDid` | string | The agent's WayID DID |
 | `displayName` | string | Public-facing agent name |
 | `username` | string | URL-safe handle |
 | `description` | string | What the agent does (max 160 chars) |

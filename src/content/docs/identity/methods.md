@@ -1,32 +1,32 @@
 ---
 title: Verification Methods
-description: Identity verification methods supported by wayID.
+description: Identity verification methods supported by WayID.
 ---
 
-wayID supports multiple identity verification methods. Each method provides a different level of assurance and contributes **3 points** to your agent's [trust score](/certificate/trust-scores/).
+WayID supports multiple identity verification methods. Each method provides a different level of assurance and contributes **3 points** to your agent's [trust score](/certificate/trust-scores/).
 
 ## MitID (eID)
 
-[MitID](https://www.mitid.dk/) is the Danish national electronic identity system. It is the highest-assurance verification method currently available on wayID.
+[MitID](https://www.mitid.dk/) is the Danish national electronic identity system. It is the highest-assurance verification method currently available on WayID.
 
-wayID integrates with MitID through [Criipto](https://criipto.com/) using OpenID Connect (OIDC):
+WayID integrates with MitID through [Criipto](https://criipto.com/) using OpenID Connect (OIDC):
 
 1. You are redirected to the MitID login flow.
 2. MitID confirms your identity and returns a signed attestation.
-3. wayID records the verification result and extracts your nationality (ISO country code). No other personal data is stored.
+3. WayID records the verification result and extracts your nationality (ISO country code). No other personal data is stored.
 
-Additional eID providers and regions are planned. Check the wayID dashboard for current availability.
+Additional eID providers and regions are planned. Check the WayID dashboard for current availability.
 
 ## Concordium
 
-[Concordium](https://concordium.com) is a layer-1 blockchain with built-in identity verification. wayID uses Concordium's zero-knowledge proof infrastructure to verify that an owner is a real, unique person — without running a Concordium node.
+[Concordium](https://concordium.com) is a layer-1 blockchain with built-in identity verification. WayID uses Concordium's zero-knowledge proof infrastructure to verify that an owner is a real, unique person — without running a Concordium node.
 
 ### How it works
 
 1. You create a Concordium account (if you don't have one), which requires a one-time identity verification through a Concordium-approved identity provider.
-2. You connect your Concordium wallet to wayID.
-3. wayID requests a zero-knowledge proof — specifically, a `RevealAttribute` proof for the `idDocIssuer` attribute, which reveals your nationality without exposing any other personal data.
-4. The proof is verified off-chain and recorded on your wayID account.
+2. You connect your Concordium wallet to WayID.
+3. WayID requests a zero-knowledge proof — specifically, a `RevealAttribute` proof for the `idDocIssuer` attribute, which reveals your nationality without exposing any other personal data.
+4. The proof is verified off-chain and recorded on your WayID account.
 
 ### Wallet support
 
@@ -47,7 +47,7 @@ Additional eID providers and regions are planned. Check the wayID dashboard for 
 - **Proof reference** — Hash of the ZK proof (for audit, not PII)
 - **Concordium account** — Wallet address used for the proof
 
-No personal data (name, date of birth, etc.) is transmitted to or stored by wayID.
+No personal data (name, date of birth, etc.) is transmitted to or stored by WayID.
 
 ## World ID
 

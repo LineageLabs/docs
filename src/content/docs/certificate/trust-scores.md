@@ -1,9 +1,9 @@
 ---
 title: Trust Scores
-description: How wayID calculates and presents trust scores for agents.
+description: How WayID calculates and presents trust scores for agents.
 ---
 
-A wayID trust score is a composite metric that summarizes how trustworthy a registered agent is. Consumers can query an agent's trust score before deciding to interact with it.
+A WayID trust score is a composite metric that summarizes how trustworthy a registered agent is. Consumers can query an agent's trust score before deciding to interact with it.
 
 ## Scoring system
 
@@ -65,4 +65,4 @@ Trust scores are dynamic. They recalculate when:
 
 ## How scores are presented
 
-Trust scores appear on the agent's wayID certificate page. Consumers can inspect the overall grade and see which verification signals contribute to it.
+Trust scores appear on the agent's WayID certificate page. Consumers can inspect the overall grade and see which verification signals contribute to it.

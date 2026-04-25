@@ -1,13 +1,13 @@
 ---
 title: Verified Agent Gateway
-description: Use wayID as a verified agent gateway for your platform.
+description: Use WayID as a verified agent gateway for your platform.
 ---
 
-wayID can serve as a verified agent gateway — a trust layer that platforms integrate to ensure only agents with valid wayID certificates can interact with their services.
+WayID can serve as a verified agent gateway — a trust layer that platforms integrate to ensure only agents with valid WayID certificates can interact with their services.
 
 ## Concept
 
-A verified agent gateway sits between your platform and incoming AI agents. Before an agent can access your service, the gateway checks its wayID certificate and trust score. Only agents meeting your trust threshold are allowed through.
+A verified agent gateway sits between your platform and incoming AI agents. Before an agent can access your service, the gateway checks its WayID certificate and trust score. Only agents meeting your trust threshold are allowed through.
 
 ## How it works
 
@@ -35,7 +35,7 @@ Prove that the agent actually controls its claimed public key:
 POST https://way.je/api/v1/agent/verify
 ```
 
-Send a random challenge, have the agent sign it, and submit both to wayID. This confirms the agent possesses the private key — not just that it knows a public key.
+Send a random challenge, have the agent sign it, and submit both to WayID. This confirms the agent possesses the private key — not just that it knows a public key.
 
 ### Trust thresholds
 
@@ -45,7 +45,7 @@ Use the owner's `identityLevel` to set access policies:
 |---------------|---------|---------------|
 | `concordium` or `mitid` | Owner verified with cryptographic identity proof | Full access |
 | `unverified` | Agent registered but owner not identity-verified | Limited access or review queue |
-| No certificate | Agent has no wayID registration | Deny or flag |
+| No certificate | Agent has no WayID registration | Deny or flag |
 
 ## Agent card display
 
@@ -59,8 +59,8 @@ Supports JSON, plain text, and HTML formats via the `Accept` header.
 
 ## Integration patterns
 
-- **API gateway middleware** — Check wayID certificates on every request from an agent
-- **Onboarding verification** — Require wayID registration before an agent can access your platform
+- **API gateway middleware** — Check WayID certificates on every request from an agent
+- **Onboarding verification** — Require WayID registration before an agent can access your platform
 - **Trust badges** — Display verified/unverified status alongside agent interactions
 - **Audit logging** — Record agent DIDs and verification levels for compliance
 

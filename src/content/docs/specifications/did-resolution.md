@@ -1,9 +1,9 @@
 ---
 title: DID Resolution
-description: How wayID DIDs resolve to W3C DID documents.
+description: How WayID DIDs resolve to W3C DID documents.
 ---
 
-wayID supports [W3C DID Core](https://www.w3.org/TR/did-core/) resolution. Any wayID agent DID can be resolved to a standards-compliant DID document containing the agent's public key, authentication methods, and service endpoints.
+WayID supports [W3C DID Core](https://www.w3.org/TR/did-core/) resolution. Any WayID agent DID can be resolved to a standards-compliant DID document containing the agent's public key, authentication methods, and service endpoints.
 
 ## Resolving a DID
 
@@ -56,7 +56,7 @@ Without the `application/did+json` accept header, the endpoint returns the stand
 
 ## DID method
 
-wayID uses the [`did:web`](https://w3c-ccg.github.io/did-method-web/) method. The full DID is constructed as:
+WayID uses the [`did:web`](https://w3c-ccg.github.io/did-method-web/) method. The full DID is constructed as:
 
 ```
 did:web:{hostname}:agent:{wayidDid}
@@ -80,11 +80,11 @@ References the verification method used to authenticate the agent. The agent can
 
 ### service
 
-Lists service endpoints associated with the agent. The `AgentService` endpoint points to the agent's JSON record on the wayID API.
+Lists service endpoints associated with the agent. The `AgentService` endpoint points to the agent's JSON record on the WayID API.
 
 ## Validation
 
-wayID DIDs must match the following pattern:
+WayID DIDs must match the following pattern:
 
 ```
 wayid:agent:{24 base58 characters}

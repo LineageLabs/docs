@@ -1,20 +1,20 @@
 ---
 title: Agent Claiming Guide
-description: Step-by-step guide to registering your AI agent with wayID.
+description: Step-by-step guide to registering your AI agent with WayID.
 ---
 
-Claiming is the process of binding your AI agent's cryptographic identity to your verified wayID account. After claiming, your agent receives a wayID DID and a verifiable certificate.
+Claiming is the process of binding your AI agent's cryptographic identity to your verified WayID account. After claiming, your agent receives a WayID DID and a verifiable certificate.
 
 ## Prerequisites
 
-- A wayID account with at least one [identity verification](/identity/methods/)
+- A WayID account with at least one [identity verification](/identity/methods/)
 - An AI agent running [OpenClaw](https://openclaw.ai) with a generated Ed25519 keypair at `~/.openclaw/identity/device.json`
 
 ## The claiming flow
 
 ### Step 1: Generate a claim token
 
-On the wayID dashboard at [way.je/claim](https://way.je/claim), click **Generate Token**. You'll receive a short-lived token in this format:
+On the WayID dashboard at [way.je/claim](https://way.je/claim), click **Generate Token**. You'll receive a short-lived token in this format:
 
 ```
 wayid-verify-a7b3c9
@@ -37,7 +37,7 @@ Your agent (using the `wayid-claim` skill or equivalent logic) will:
 
 2. **Sign the exact token string** using its Ed25519 private key.
 
-3. **Submit the claim** to the wayID API:
+3. **Submit the claim** to the WayID API:
    ```
    POST https://way.je/api/v1/claim
    Content-Type: application/json
@@ -49,11 +49,11 @@ Your agent (using the `wayid-claim` skill or equivalent logic) will:
    }
    ```
 
-4. On success, your agent will confirm: _"Done! Your wayID claim has been verified."_
+4. On success, your agent will confirm: _"Done! Your WayID claim has been verified."_
 
 ### Step 4: Complete the agent profile
 
-Once the token is redeemed, the wayID dashboard enables the next step. Fill in your agent's:
+Once the token is redeemed, the WayID dashboard enables the next step. Fill in your agent's:
 
 - **Username** — URL-safe handle (e.g. `acme-bot`)
 - **Display name** — Public-facing name
@@ -62,7 +62,7 @@ Once the token is redeemed, the wayID dashboard enables the next step. Fill in y
 
 ### Step 5: Certificate issued
 
-wayID generates a DID for your agent and issues a certificate. Your agent is now verifiable at:
+WayID generates a DID for your agent and issues a certificate. Your agent is now verifiable at:
 
 ```
 https://way.je/agent/wayid:agent:{your-agent-did}

@@ -1,25 +1,25 @@
 ---
 title: Agent Registration
-description: Register and manage your AI agents on wayID.
+description: Register and manage your AI agents on WayID.
 ---
 
-Agent registration binds your AI agents to your verified owner identity. Each registered agent receives a wayID decentralized identifier (DID) and a verifiable certificate that consumers can check.
+Agent registration binds your AI agents to your verified owner identity. Each registered agent receives a WayID decentralized identifier (DID) and a verifiable certificate that consumers can check.
 
 ## How it works
 
 Registration is a cryptographic handshake between you (the owner) and your AI agent:
 
-1. **Generate a claim token** — On the wayID dashboard, you generate a short-lived verification token.
-2. **Agent signs the token** — You give the token to your agent. The agent signs it with its Ed25519 private key and submits it to the wayID API.
-3. **Ownership confirmed** — wayID verifies the signature and binds the agent's public key to your account.
+1. **Generate a claim token** — On the WayID dashboard, you generate a short-lived verification token.
+2. **Agent signs the token** — You give the token to your agent. The agent signs it with its Ed25519 private key and submits it to the WayID API.
+3. **Ownership confirmed** — WayID verifies the signature and binds the agent's public key to your account.
 4. **Complete the profile** — You fill in the agent's display name, username, and description.
-5. **DID issued** — wayID generates a unique DID and issues a verifiable certificate.
+5. **DID issued** — WayID generates a unique DID and issues a verifiable certificate.
 
 For a detailed walkthrough of this process, see the [Agent Claiming Guide](/agents/claiming/).
 
 ## DID format
 
-Each registered agent receives a wayID DID in this format:
+Each registered agent receives a WayID DID in this format:
 
 ```
 wayid:agent:{24-character-base58-identifier}
@@ -29,7 +29,7 @@ For example: `wayid:agent:7f3aB9cDe2FgHjKmNpQrSt4U`
 
 The identifier is derived from a SHA-256 hash of the owner ID, agent UUID, and registration timestamp, encoded using the Bitcoin base58 alphabet (no `0`, `O`, `I`, or `l`). This provides approximately 142 bits of entropy.
 
-The DID is the canonical identifier for your agent across the wayID ecosystem. It can be resolved to retrieve the agent's certificate, owner information, and trust score. See [DID Resolution](/specifications/did-resolution/) for details on how DIDs resolve to W3C DID documents.
+The DID is the canonical identifier for your agent across the WayID ecosystem. It can be resolved to retrieve the agent's certificate, owner information, and trust score. See [DID Resolution](/specifications/did-resolution/) for details on how DIDs resolve to W3C DID documents.
 
 ## Certificate status
 
@@ -45,7 +45,7 @@ Each agent certificate has one of three statuses:
 
 ### Viewing registered agents
 
-Your wayID dashboard lists all agents registered under your owner account, including their DID, registration date, and current status.
+Your WayID dashboard lists all agents registered under your owner account, including their DID, registration date, and current status.
 
 ### Suspending an agent
 
