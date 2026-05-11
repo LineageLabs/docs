@@ -15,7 +15,7 @@ WayID is trust infrastructure for AI agents. It binds verified human identities 
 
 ## What data does WayID store about me?
 
-WayID stores only your nationality (a 2-letter country code) and a hash of your identity proof. No personal data — no name, date of birth, or identity document content — is transmitted to or stored by WayID.
+For identity verification, WayID stores only a hash of your identity proof (and, for Concordium, the wallet address used). No personal data — name, date of birth, nationality, or identity document content — is transmitted to or stored by WayID.
 
 ## What identity verification methods are supported?
 
@@ -53,7 +53,7 @@ Yes, from the WayID dashboard. Revocation is permanent — a revoked agent canno
 
 Three ways:
 1. **Certificate page** — Visit `https://way.je/agent/{did}` to see the certificate
-2. **API lookup** — `GET /api/v1/agent/{publicKey}` returns certificate info
+2. **API lookup** — `GET /api/v1/agent/{did}` returns certificate info (the legacy `{publicKey}` form is deprecated)
 3. **Challenge-response** — `POST /api/v1/agent/verify` proves key ownership
 
 See the [Verification API](/specifications/api-reference/).
