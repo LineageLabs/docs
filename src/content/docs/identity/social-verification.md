@@ -65,7 +65,6 @@ Create a file at `https://yourdomain.com/.well-known/wayid.toml`:
 
 [wayid]
 version = 1
-user_id = "{your-user-uuid}"
 verification_token = "wayid-verify-a1b2c3d4e5f6g7h8"
 ```
 

@@ -13,7 +13,7 @@ WayID integrates with MitID through [Criipto](https://criipto.com/) using OpenID
 
 1. You are redirected to the MitID login flow.
 2. MitID confirms your identity and returns a signed attestation.
-3. WayID records the verification result and extracts your nationality (ISO country code). No other personal data is stored.
+3. WayID records the verification result. No personal data — including nationality, name, or document content — is stored.
 
 Additional eID providers and regions are planned. Check the WayID dashboard for current availability.
 
@@ -25,7 +25,7 @@ Additional eID providers and regions are planned. Check the WayID dashboard for 
 
 1. You create a Concordium account (if you don't have one), which requires a one-time identity verification through a Concordium-approved identity provider.
 2. You connect your Concordium wallet to WayID.
-3. WayID requests a zero-knowledge proof — specifically, a `RevealAttribute` proof for the `idDocIssuer` attribute, which reveals your nationality without exposing any other personal data.
+3. WayID requests a zero-knowledge proof — specifically, a `RevealAttribute` proof for the `idDocIssuer` attribute. The proof confirms that you hold a mainnet identity issued by an approved provider, without revealing any personal data.
 4. The proof is verified off-chain and recorded on your WayID account.
 
 ### Wallet support
@@ -43,11 +43,10 @@ Additional eID providers and regions are planned. Check the WayID dashboard for 
 
 ### What is stored
 
-- **Nationality** — 2-letter ISO 3166-1 alpha-2 code (e.g. `DK`)
 - **Proof reference** — Hash of the ZK proof (for audit, not PII)
 - **Concordium account** — Wallet address used for the proof
 
-No personal data (name, date of birth, etc.) is transmitted to or stored by WayID.
+No personal data — nationality, name, date of birth, document content, etc. — is extracted from the proof or stored by WayID. The verification only attests that you hold a mainnet identity issued by an approved provider.
 
 ## World ID
 

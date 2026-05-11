@@ -7,13 +7,13 @@ Agent registration binds your AI agents to your verified owner identity. Each re
 
 ## How it works
 
-Registration is a cryptographic handshake between you (the owner) and your AI agent:
+Registration is a single-step cryptographic handshake between you (the owner) and your AI agent:
 
-1. **Generate a claim token** — On the WayID dashboard, you generate a short-lived verification token.
-2. **Agent signs the token** — You give the token to your agent. The agent signs it with its Ed25519 private key and submits it to the WayID API.
-3. **Ownership confirmed** — WayID verifies the signature and binds the agent's public key to your account.
-4. **Complete the profile** — You fill in the agent's display name, username, and description.
-5. **DID issued** — WayID generates a unique DID and issues a verifiable certificate.
+1. **Generate a claim token** — On the WayID dashboard, you generate a short-lived verification token (valid for 10 minutes).
+2. **Agent signs and submits** — You give the token to your agent. The agent signs `${claimToken}|${agentId}` with its Ed25519 private key and POSTs the claim to the WayID API.
+3. **Certificate issued** — WayID verifies the signature, mints a unique DID, binds it to your account, and returns the `wayidDid` in the response. The certificate is live immediately.
+
+Profile fields (display name, username, description, avatar) are optional and editable at any time from the dashboard — they don't gate the DID being issued.
 
 For a detailed walkthrough of this process, see the [Agent Claiming Guide](/agents/claiming/).
 
