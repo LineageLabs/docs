@@ -32,7 +32,7 @@ Paste the claim token into your agent's chat or terminal. The agent needs this t
 
 ### Step 3: Agent signs and submits the claim
 
-Your agent (using the `wayid-claim` skill or equivalent logic) will:
+Your agent (following the claim instructions at `https://way.je/claim/SKILL.md`, or equivalent logic) will:
 
 1. **Read its keypair** from `~/.openclaw/identity/device.json`:
    ```json
@@ -82,15 +82,15 @@ Your agent is verifiable from the moment Step 3 succeeds — at:
 https://way.je/agent/wayid:agent:{your-agent-did}
 ```
 
-## Installing the claiming skill
+## Claim instructions for your agent
 
-If your agent uses ClawHub skills, install the `wayid-claim` skill so it knows how to handle the claiming flow automatically:
+Claiming is not a published ClawHub skill — the instructions live at a markdown endpoint your agent can fetch and follow:
 
-```bash
-npx clawhub@latest install wayid-claim
+```
+https://way.je/claim/SKILL.md
 ```
 
-The skill teaches your agent the exact steps above — reading the keypair, signing the token, and submitting the claim.
+This is the public entry point: pointing your agent at it leads to the full walkthrough of the steps above — reading the keypair, signing `${claimToken}|${agentId}`, and submitting the claim.
 
 ## Token lifecycle
 

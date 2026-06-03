@@ -14,41 +14,42 @@ ClawHub ships the following WayID skills out of the box:
 | **whoareyou** | `/whoareyou` | Display your agent's verified WayID identity card |
 | **who** | `/who` | Shorthand alias for `/whoareyou` |
 | **way** | `/way` | Shorthand alias for `/whoareyou` |
-| **wayid-claim** | _internal_ | Register your agent with WayID and receive a provenance certificate |
+
+Registration (claiming) is **not** a published ClawHub skill — it's a separate flow served as markdown instructions at `https://way.je/claim/SKILL.md`. See the [Agent Claiming Guide](/agents/claiming/).
 
 ### `/whoareyou` (and `/who`, `/way`)
 
 When a user invokes this skill, your agent:
 
-1. Reads its Ed25519 public key from `~/.openclaw/identity/device.json`
-2. Looks up its WayID certificate via `GET https://way.je/api/v1/agent/{publicKey}`
-3. Fetches the full identity card via `GET https://way.je/api/agents/{wayidDid}/card`
-4. Displays a formatted identity card:
+1. Reads its WayID DID from its claim file on disk (e.g. `{openclaw}/workspace/wayid.json`, which holds `wayidDid` and the issuing `wayidIssuer` origin). The skill is read-only and never touches the agent's keys.
+2. Fetches its identity card with a single call: `GET {wayidIssuer}/api/v1/agent/{id}/card`, where `{id}` is the bare 24-character identifier (the part after `wayid:agent:`).
+3. Displays a formatted identity card:
 
 ```
-🛡️ Acme Bot @acme-bot
-AI assistant for Acme Corp
+🛡 Acme Bot
 
-✅ Verified — Concordium ID
-Owned by Jane Smith (@janesmith)
+@acme-bot is bound to a WayID-verified owner.
 
-View Certificate → https://way.je/agent/wayid:agent:...
+Owner: Jane Smith (WayID: human.janesmith)
+✓ Verified Human
+
+View Certificate → https://way.je/agent/acme-bot
 ```
 
-If the agent is not yet verified, it shows a warning instead of the verified badge.
+If the agent is not yet verified, the badge line shows `✕ Unverified` instead. If no claim file exists, the skill tells the user to run the claim flow first.
 
 `/who` and `/way` are convenience aliases — they behave identically to `/whoareyou`.
 
-### `wayid-claim`
+### Claiming (registration)
 
-This skill handles the one-time registration of your agent with WayID. It is not user-invocable — it runs as part of the claiming flow:
+Registering your agent with WayID is handled by a separate flow, not a published skill:
 
 1. The agent owner generates a claim token at `https://way.je/claim`
-2. The agent signs the token with its Ed25519 private key
-3. The signed token is submitted to `POST https://way.je/api/v1/claim`
-4. On success, the agent receives a WayID DID certificate (`wayid:agent:{24-char-base58}`)
+2. The agent signs `${claimToken}|${agentId}` with its Ed25519 private key
+3. The signed claim is submitted to `POST https://way.je/api/v1/claim`
+4. On success, the agent receives a WayID DID (`wayid:agent:{24-char-base58}`)
 
-After claiming, anyone can verify the agent at `https://way.je/agent/{did}`.
+After claiming, anyone can verify the agent at `https://way.je/agent/{did}`. See the [Agent Claiming Guide](/agents/claiming/) for the full walkthrough.
 
 ## Installing skills
 
@@ -64,7 +65,7 @@ For example, to install the WayID identity card skill:
 npx clawhub@latest install whoareyou
 ```
 
-Skills are installed as folders in your agent's project under `skills/`, each containing a `SKILL.md` file and metadata. Installed skills are tracked in `.clawhub/lock.json`.
+Skills are installed as folders in your agent's project under `skills/`, each containing a `SKILL.md` file and metadata. Installed skills are tracked in a lockfile so versions can be pinned.
 
 ### SKILL.md format
 
@@ -73,7 +74,7 @@ Each skill is defined by a `SKILL.md` file with YAML frontmatter:
 ```markdown
 ---
 name: whoareyou
-version: 1.0.0
+version: 3.2.0
 description: Show your verified WayID identity card when a user asks who you are
 user-invocable: true
 ---

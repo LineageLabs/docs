@@ -40,8 +40,8 @@ GET /api/v1/agent/{did}
 | Field | Description |
 |-------|-------------|
 | `verified` | Whether the agent has a WayID certificate |
-| `owner.identityMethod` | Identity provider used (`concordium`, `mitid`, `worldid`, or `null`) |
-| `owner.identityLevel` | The provider name when verified (`concordium`, `mitid`, `worldid`), or `"unverified"` |
+| `owner.identityMethod` | Identity provider used (`worldid`, `concordium`, …), or `null` if the owner is not identity-verified |
+| `owner.identityLevel` | `"verified"` when the owner has an identity verification, otherwise `"unverified"` |
 | `certificate.id` | The agent's WayID DID |
 | `certificate.status` | `"active"`, `"suspended"`, or `"revoked"` |
 | `certificate.verifyUrl` | Relative URL to the agent's public certificate page |
@@ -147,7 +147,7 @@ All endpoints return errors in a consistent format:
   "error": {
     "code": "ERROR_CODE",
     "message": "Human-readable description",
-    "request_id": "req_a1b2c3d4e5f6g7h8"
+    "requestId": "req_a1b2c3d4e5f6g7h8"
   }
 }
 ```
@@ -156,10 +156,12 @@ All endpoints return errors in a consistent format:
 |------|-------------|---------|
 | `VALIDATION_ERROR` | 400 | Invalid request body or parameters |
 | `INVALID_SIGNATURE` | 401 | Ed25519 signature verification failed |
-| `NOT_FOUND` | 404 | No agent found for the given public key |
+| `NOT_FOUND` | 404 | No agent found for the given key or DID |
 | `KEY_ALREADY_CLAIMED` | 409 | The `(publicKey, agentId)` pair is already registered |
 | `TOKEN_EXPIRED` | 410 | Claim token has expired |
-| `RATE_LIMITED` | 429 | Too many requests |
+| `INTERNAL_ERROR` | 500 | Unexpected server error |
+
+Rate limiting is planned but not yet enforced. When added, requests over the limit will return `429` with a `RATE_LIMITED` code.
 
 ## Cryptographic details
 

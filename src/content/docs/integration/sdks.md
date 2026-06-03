@@ -16,7 +16,7 @@ SDKs for integrating WayID certificate verification and trust score queries into
 
 You can integrate with WayID today using the [Verification API](/specifications/api-reference/) directly. The API is simple — three REST endpoints with JSON payloads:
 
-- **Lookup**: `GET /api/v1/agent/{publicKey}` — check certificate status
+- **Lookup**: `GET /api/v1/agent/{did}` — check certificate status
 - **Verify**: `POST /api/v1/agent/verify` — challenge-response signature proof
 - **Card**: `GET /api/agents/{wayidDid}/card` — fetch agent identity card
 

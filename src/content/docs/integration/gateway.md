@@ -22,10 +22,10 @@ A verified agent gateway sits between your platform and incoming AI agents. Befo
 Check an agent's certificate without the agent's participation:
 
 ```
-GET https://way.je/api/v1/agent/{publicKey}
+GET https://way.je/api/v1/agent/{did}
 ```
 
-Returns the agent's certificate status, owner identity level, and DID. Useful for displaying trust badges or logging.
+Returns the agent's certificate status, owner identity level, and DID. Useful for displaying trust badges or logging. (The legacy `{publicKey}` form of this endpoint still works but is deprecated.)
 
 ### Active challenge-response
 
@@ -43,9 +43,11 @@ Use the owner's `identityLevel` to set access policies:
 
 | Identity level | Meaning | Suggested use |
 |---------------|---------|---------------|
-| `concordium` or `mitid` | Owner verified with cryptographic identity proof | Full access |
+| A provider name (e.g. `worldid`, `concordium`) | Owner verified with a cryptographic identity proof | Full access |
 | `unverified` | Agent registered but owner not identity-verified | Limited access or review queue |
 | No certificate | Agent has no WayID registration | Deny or flag |
+
+> The challenge-response endpoint (`/api/v1/agent/verify`) returns the provider name in `identityLevel`. The lookup endpoint reports `identityLevel` as `"verified"`/`"unverified"` and names the provider in `identityMethod`.
 
 ## Agent card display
 
@@ -55,7 +57,7 @@ Fetch the [agent card](/specifications/agent-card/) to display verified identity
 GET https://way.je/api/agents/{wayidDid}/card
 ```
 
-Supports JSON, plain text, and HTML formats via the `Accept` header.
+Returns a JSON identity card (name, owner, verification, channels, trust grade). See the [agent card](/specifications/agent-card/) spec for the full field list.
 
 ## Integration patterns
 

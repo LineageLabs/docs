@@ -18,7 +18,7 @@ Create a file named `wayid.toml` in the `/.well-known/` directory of your websit
 
 ```toml
 # WayID domain verification file
-# See https://way.je/docs/verify-website for details
+# See https://docs.way.je/verify-website for details
 
 [wayid]
 version = 1
@@ -30,7 +30,7 @@ verification_token = "wayid-verify-a1b2c3d4e5f6g7h8"
 | `version` | Yes | Must be `1` |
 | `verification_token` | Yes | The token provided by WayID during setup |
 
-The `[permissions]` and `[agent]` section namespaces are reserved for future use.
+The `[org]` section namespace is used for organization domain verification; other namespaces are reserved for future use.
 
 ## Verification rules
 
@@ -47,7 +47,7 @@ WayID performs the following checks:
 
 4. **HTTP status** — The server must return a 2xx status code.
 
-Verification requests have a 10-second timeout and retry up to 3 times with exponential backoff (2s, 4s, 8s).
+Each fetch has a short timeout, and WayID retries a few times with exponential backoff before giving up. (Exact timeout, retry counts, and delays may change.)
 
 ## Example
 
@@ -57,7 +57,7 @@ If your domain is `example.com` and your verification token is `wayid-verify-a1b
 
 ```toml
 # WayID domain verification file
-# See https://way.je/docs/verify-website for details
+# See https://docs.way.je/verify-website for details
 
 [wayid]
 version = 1
@@ -66,7 +66,7 @@ verification_token = "wayid-verify-a1b2c3d4e5f6g7h8"
 
 ## Token generation
 
-Verification tokens are deterministic HMAC-SHA256 signatures derived from your user ID, platform, handle, and creation timestamp. The same token is regenerated each time you view your verification instructions — you don't need to store it.
+Verification tokens are deterministic HMAC-SHA256 signatures derived from your user ID, the platform, the handle or URL, and the social link's internal ID. The same token is regenerated each time you view your verification instructions — you don't need to store it.
 
 ## Common issues
 

@@ -34,6 +34,10 @@ Without at least one identity verification, the maximum achievable grade is **C*
 
 For example, an owner with 4 verified social links (4 points) would normally receive a grade B, but without identity verification, the grade is capped at C.
 
+### Channel cap
+
+An agent's grade can also be capped by how it is bound to the world. The strongest verified channel sets an upper bound: a verified domain or A2A binding allows up to **A**, a chat channel (e.g. Telegram) up to **B**, and the OpenClaw fallback binding up to **C**. The grade shown on a certificate is the lower of the points-based grade and any applicable cap.
+
 ## What counts as identity verification
 
 The following methods contribute 3 points each:

@@ -16,9 +16,8 @@ WayID ships several built-in skills:
 | [`/whoareyou`](/agents/skills/) | Display the agent's verified identity card |
 | [`/who`](/agents/skills/) | Shorthand for `/whoareyou` |
 | [`/way`](/agents/skills/) | Shorthand for `/whoareyou` |
-| [`wayid-claim`](/agents/claiming/) | Register the agent with WayID |
 
-See the [Skills guide](/agents/skills/) for details on installing and using these.
+See the [Skills guide](/agents/skills/) for details on installing and using these. Registration (claiming) is a separate flow, not a published skill — see the [Agent Claiming Guide](/agents/claiming/).
 
 ## Installing skills
 
@@ -28,7 +27,7 @@ Use the ClawHub CLI:
 npx clawhub@latest install <skill-name>
 ```
 
-Skills are installed as folders under `skills/` in your project, each containing a `SKILL.md` file and metadata. Installed skills are tracked in `.clawhub/lock.json`.
+Skills are installed as folders under `skills/` in your project, each containing a `SKILL.md` file and metadata. Installed skills are tracked in a lockfile so versions can be pinned.
 
 ## Publishing skills
 

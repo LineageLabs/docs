@@ -53,7 +53,7 @@ Create a **public Gist** with any filename containing:
 wayid-verify: wayid-verify-a1b2c3d4e5f6g7h8
 ```
 
-Paste the Gist URL into the dashboard. WayID fetches the Gist via the GitHub API and searches all files for your token.
+Paste the Gist URL into the dashboard. WayID fetches the Gist's raw content (`gist.githubusercontent.com/.../raw`) and searches it for your token.
 
 ### Website
 
@@ -61,7 +61,7 @@ Create a file at `https://yourdomain.com/.well-known/wayid.toml`:
 
 ```toml
 # WayID domain verification file
-# See https://way.je/docs/verify-website for details
+# See https://docs.way.je/verify-website for details
 
 [wayid]
 version = 1
@@ -72,11 +72,11 @@ See the [.well-known/wayid.toml specification](/specifications/well-known/) for 
 
 ## Verification tokens
 
-Tokens are deterministic — they are derived from your user ID, platform, handle, and the timestamp when you added the link using HMAC-SHA256. The same token is shown each time you view your verification instructions. You don't need to save it.
+Tokens are deterministic — they are derived using HMAC-SHA256 from your user ID, the platform, the handle or URL, and the social link's internal ID. The same token is shown each time you view your verification instructions, so you don't need to save it.
 
 ## Retry behaviour
 
-If verification fails on the first attempt, WayID retries up to 3 times with exponential backoff (2s, 4s, 8s delays). If all retries fail, the link is marked as **pending** and retried in the background. If background retries also fail, the status changes to **unverified** and you'll be notified.
+If a check doesn't succeed immediately, WayID retries a few times with short exponential backoff before giving up. If it still doesn't succeed, the link is left **pending** and you can retry it from the dashboard. (Exact retry counts and delays may change.)
 
 ## Removing a social link
 
