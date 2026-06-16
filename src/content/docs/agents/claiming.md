@@ -5,14 +5,19 @@ description: Step-by-step guide to registering your AI agent with WayID.
 
 Claiming is the process of binding your AI agent's cryptographic identity to your verified WayID account. After claiming, your agent receives a WayID DID and a verifiable certificate.
 
+There are two ways to claim:
+
+- **[The WayID OpenClaw plugin](#claiming-with-the-openclaw-plugin)** (recommended) — one command, all signing done in-process. The agent's private key never enters the model's context.
+- **[The direct claim API](#claiming-with-the-claim-api)** — for non-OpenClaw agents or custom integrations that sign and submit the claim themselves.
+
 ## Prerequisites
 
 - A WayID account with at least one [identity verification](/identity/methods/)
-- An AI agent running [OpenClaw](https://openclaw.ai) with a generated Ed25519 keypair at `~/.openclaw/identity/device.json`
+- A claim token from [way.je/claim](https://way.je/claim) (see [Step 1](#step-1-generate-a-claim-token) below)
 
-## The claiming flow
+## Claiming with the OpenClaw plugin
 
-Claiming is a single-step cryptographic handshake: the agent submits a signed claim and the WayID API immediately mints the DID and issues the certificate. Profile fields (display name, avatar, description) are optional and can be filled in afterwards.
+The [WayID OpenClaw plugin](/certificate/openclaw/) (`@lineagelabs/wayid`) is the recommended way to claim an agent. It generates an Ed25519 keypair, signs the claim payload, submits it, and persists the result — all in code. **The private key is never returned to the model or placed in the conversation.**
 
 ### Step 1: Generate a claim token
 
@@ -26,20 +31,86 @@ For example: `wayid-verify-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`.
 
 The token expires after **10 minutes**. A countdown timer on the dashboard shows the remaining time.
 
+### Step 2: Install the plugin
+
+Install the plugin into your OpenClaw agent from ClawHub:
+
+```bash
+openclaw plugins install clawhub:@lineagelabs/wayid
+```
+
+This registers two slash commands — `/claim` and `/whoareyou` (with `/way` and `/who` as aliases) — and the corresponding `wayid_claim` and `wayid_whoareyou` tools.
+
+### Step 3: Run the claim command
+
+Paste the token into your agent and run:
+
+```
+/claim wayid-verify-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
+```
+
+The plugin then, entirely in-process:
+
+1. **Generates an Ed25519 keypair** (or reuses an existing one), storing it at `{openclaw}/workspace/wayid-key.json`. This file holds the private key and is never read back into the conversation.
+2. **Signs `${claimToken}|${agentId}`** (the token, a literal pipe character, then the `agentId`) with the private key. Folding `agentId` into the signed bytes prevents a captured signature from being rebound to a different sub-agent on resubmit.
+3. **Submits the claim** to `POST {issuer}/api/v1/claim`.
+4. **Persists the DID record** to `{openclaw}/workspace/wayid.json` (DID, issuer, and claim timestamp — no key material).
+
+On success the agent returns the new DID and a link to finish your profile:
+
+```
+✅ wayid:agent:7f3aB9cDe2FgHjKmNpQrSt4U
+
+👉 https://way.je/claim/embellish?wayid=7f3aB9cDe2FgHjKmNpQrSt4U
+```
+
+The DID is live immediately.
+
+### `agentId` and named agents
+
+The claim defaults to the `agentId` `main`, stored under `{openclaw}/workspace/wayid.json`. A named OpenClaw agent claims under its own `agentId`, and its DID record lives at `{openclaw}/workspace-<agentId>/wayid.json`. Each `agentId` on the keypair mints a distinct DID, so one OpenClaw install can register multiple sub-agents.
+
+### Pointing at a different WayID server
+
+The plugin defaults to `https://way.je`. To claim against a staging or self-hosted server, set the `wayidIssuer` config for the plugin in `openclaw.json`:
+
+```json
+{
+  "plugins": {
+    "entries": {
+      "lineagelabs-wayid": {
+        "config": { "wayidIssuer": "https://staging.way.je" }
+      }
+    }
+  }
+}
+```
+
+From a Docker container hitting a local dev server, use `http://host.docker.internal:5173`.
+
+### Re-claiming
+
+Re-claiming the same `agentId` is blocked — the plugin reports the existing DID and claim date. To rebind, revoke the agent from the [way.je dashboard](https://way.je) and run `/claim` again. To register an *additional* sub-agent on the same install, claim with a different `agentId`.
+
+## Claiming with the claim API
+
+If your agent does not run the OpenClaw plugin (a non-OpenClaw runtime, or a custom integration), it can sign and submit the claim directly. The cryptographic handshake is identical — the plugin is simply an in-process implementation of these same steps.
+
+### Step 1: Generate a claim token
+
+Same as above — generate a token at [way.je/claim](https://way.je/claim).
+
 ### Step 2: Give the token to your agent
 
 Paste the claim token into your agent's chat or terminal. The agent needs this token to prove it is acting on your behalf.
 
 ### Step 3: Agent signs and submits the claim
 
-Your agent (following the claim instructions at `https://way.je/claim/SKILL.md`, or equivalent logic) will:
+Your agent will:
 
-1. **Read its keypair** from `~/.openclaw/identity/device.json`:
-   ```json
-   { "publicKey": "<base64>", "privateKey": "<base64>" }
-   ```
+1. **Load or generate an Ed25519 keypair.** The OpenClaw plugin stores its key at `{openclaw}/workspace/wayid-key.json`; a custom integration keeps the private key wherever it manages secrets. The public key is base64-encoded for submission.
 
-2. **Choose an `agentId`** — an operator-supplied sub-agent label inside its OpenClaw runtime (e.g. `acme-bot`, `support-bot`). The same `device.json` keypair can stamp out distinct DIDs for multiple sub-agents — each `(publicKey, agentId)` pair gets its own WayID DID.
+2. **Choose an `agentId`** — an operator-supplied sub-agent label (e.g. `acme-bot`, `support-bot`). The same keypair can stamp out distinct DIDs for multiple sub-agents — each `(publicKey, agentId)` pair gets its own WayID DID.
 
 3. **Sign `${claimToken}|${agentId}`** (the token, a literal pipe character, then the agentId) using its Ed25519 private key. Folding `agentId` into the signed bytes prevents a captured signature from being rebound to a different sub-agent on resubmit.
 
@@ -67,30 +138,20 @@ Your agent (following the claim instructions at `https://way.je/claim/SKILL.md`,
 
    The DID is live immediately. The agent should persist `wayidDid` to disk (e.g. `{openclaw}/workspace/wayid.json`) so it can reference its identity in future interactions.
 
-### Step 4 (optional): Complete the agent profile
+## Completing the agent profile (optional)
 
-Profile fields are optional and editable at any time from the WayID dashboard:
+Profile fields are optional and editable at any time from the WayID dashboard (the plugin links you straight to it after a successful claim):
 
 - **Username** — URL-safe handle (e.g. `acme-bot`)
 - **Display name** — Public-facing name
 - **Description** — What the agent does (max 160 characters)
 - **Avatar** — Optional profile image
 
-Your agent is verifiable from the moment Step 3 succeeds — at:
+Your agent is verifiable from the moment the claim succeeds — at:
 
 ```
 https://way.je/agent/wayid:agent:{your-agent-did}
 ```
-
-## Claim instructions for your agent
-
-Claiming is not a published ClawHub skill — the instructions live at a markdown endpoint your agent can fetch and follow:
-
-```
-https://way.je/claim/SKILL.md
-```
-
-This is the public entry point: pointing your agent at it leads to the full walkthrough of the steps above — reading the keypair, signing `${claimToken}|${agentId}`, and submitting the claim.
 
 ## Token lifecycle
 
@@ -103,17 +164,20 @@ This is the public entry point: pointing your agent at it leads to the full walk
 
 ## Troubleshooting
 
+**"Invalid token format" error (plugin)**
+The `/claim` command expects `wayid-verify-` followed by 32 hex characters. The plugin will also accept a bare 32-char hex string and add the prefix for you, but pass the full token shown on the dashboard when you can.
+
 **"Invalid signature" error**
 The agent must sign the bytes `${claimToken}|${agentId}` (token, pipe, agentId) — not the bare token. No trailing whitespace or newlines. The signature must be base64-encoded.
 
-**"Key already claimed" error**
-Each `(publicKey, agentId)` pair can only be registered once. Re-claiming with the same `agentId` on the same key is blocked. To register an additional sub-agent on the same `device.json`, pick a different `agentId`. To start over with the same `agentId`, use a fresh keypair.
+**"Already claimed" / "Key already claimed" error**
+Each `(publicKey, agentId)` pair can only be registered once. With the plugin, revoke the agent from the way.je dashboard and re-run `/claim`, or claim a new sub-agent with a different `agentId`. With the direct API, pick a different `agentId`, or use a fresh keypair to start over with the same `agentId`.
 
-**Token expired before agent could sign**
+**Token expired before the claim was submitted**
 Generate a new token. Tokens are intentionally short-lived (10 minutes) to prevent replay attacks.
 
 ## What happens after claiming
 
-- Your agent can use the [`/whoareyou`](/agents/skills/) skill to display its verified identity card
+- Your agent can use the [`/whoareyou`](/agents/skills/) command (or the `wayid_whoareyou` tool) to display its verified identity card
 - Consumers can verify your agent via the [Verification API](/specifications/api-reference/)
 - Your agent's certificate contributes to its [trust score](/certificate/trust-scores/)

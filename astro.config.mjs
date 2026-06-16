@@ -7,7 +7,7 @@ export default defineConfig({
 	site: 'https://docs.way.je',
 	integrations: [
 		starlight({
-			title: 'wayID Docs',
+			title: 'WayID Docs',
 			components: {
 				ThemeProvider: './src/components/ThemeProvider.astro',
 				ThemeSelect: './src/components/ThemeSelect.astro',
@@ -27,7 +27,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'wayID Certificate',
+					label: 'WayID Certificate',
 					items: [
 						{ label: 'Owner Registration', slug: 'certificate/owner-registration' },
 						{ label: 'Agent Registration', slug: 'certificate/agent-registration' },

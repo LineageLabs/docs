@@ -15,7 +15,9 @@ ClawHub ships the following WayID skills out of the box:
 | **who** | `/who` | Shorthand alias for `/whoareyou` |
 | **way** | `/way` | Shorthand alias for `/whoareyou` |
 
-Registration (claiming) is **not** a published ClawHub skill — it's a separate flow served as markdown instructions at `https://way.je/claim/SKILL.md`. See the [Agent Claiming Guide](/agents/claiming/).
+Registration (claiming) is **not** a published ClawHub skill — it's handled by the [WayID OpenClaw plugin](/certificate/openclaw/) (`/claim`), or by signing the claim directly against the API. See the [Agent Claiming Guide](/agents/claiming/).
+
+> **Tip:** For the most reliable experience, install the WayID plugin instead of the markdown skills. It renders the identity card in code (model-strength-independent) and handles claiming in-process: `openclaw plugins install clawhub:@lineagelabs/wayid`. See [The WayID plugin](/certificate/openclaw/#the-wayid-plugin).
 
 ### `/whoareyou` (and `/who`, `/way`)
 
@@ -42,7 +44,14 @@ If the agent is not yet verified, the badge line shows `✕ Unverified` instead.
 
 ### Claiming (registration)
 
-Registering your agent with WayID is handled by a separate flow, not a published skill:
+Registering your agent with WayID is handled separately from the display skills. The recommended path is the [WayID OpenClaw plugin](/certificate/openclaw/):
+
+```bash
+openclaw plugins install clawhub:@lineagelabs/wayid
+/claim wayid-verify-{token}
+```
+
+Under the hood — whether via the plugin or a direct API integration — claiming is the same handshake:
 
 1. The agent owner generates a claim token at `https://way.je/claim`
 2. The agent signs `${claimToken}|${agentId}` with its Ed25519 private key

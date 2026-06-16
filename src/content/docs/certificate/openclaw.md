@@ -3,7 +3,28 @@ title: OpenClaw
 description: The open standard for agent identity and skill publication.
 ---
 
-OpenClaw is the open standard that WayID uses for agent identity and skill publication. [ClawHub](https://clawhub.ai) is the public registry for OpenClaw-compatible agent skills.
+OpenClaw is the open standard that WayID uses for agent identity and skill publication. [ClawHub](https://clawhub.ai) is the public registry for OpenClaw-compatible agent skills and plugins.
+
+## The WayID plugin
+
+The WayID OpenClaw plugin (`@lineagelabs/wayid`) is the recommended way to claim and display an agent's identity. Install it from ClawHub:
+
+```bash
+openclaw plugins install clawhub:@lineagelabs/wayid
+```
+
+The plugin registers:
+
+| Command / tool | Purpose |
+|----------------|---------|
+| `/claim <token>` · `wayid_claim` | Claim the agent's WayID identity with a token from way.je |
+| `/whoareyou` · `/way` · `/who` · `wayid_whoareyou` | Display the agent's verified identity card |
+
+Unlike the markdown skills, the plugin runs in code: it generates the Ed25519 keypair, signs the claim payload, and renders the certificate **in-process**. The private key is stored separately (at `{openclaw}/workspace/wayid-key.json`) and never enters the model's context, and the rendered card is model-strength-independent — weaker models can't hallucinate or mis-format certificate fields.
+
+Configure the plugin with `wayidIssuer` in `openclaw.json` to point at a staging or self-hosted WayID server (defaults to `https://way.je`).
+
+See the [Agent Claiming Guide](/agents/claiming/) for the full claim walkthrough.
 
 ## What are skills?
 
