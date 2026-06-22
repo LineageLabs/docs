@@ -78,7 +78,7 @@ The plugin defaults to `https://way.je`. To claim against a staging or self-host
 {
   "plugins": {
     "entries": {
-      "lineagelabs-wayid": {
+      "@lineagelabs/wayid": {
         "config": { "wayidIssuer": "https://staging.way.je" }
       }
     }
@@ -90,7 +90,7 @@ From a Docker container hitting a local dev server, use `http://host.docker.inte
 
 ### Re-claiming
 
-Re-claiming the same `agentId` is blocked — the plugin reports the existing DID and claim date. To rebind, revoke the agent from the [way.je dashboard](https://way.je) and run `/claim` again. To register an *additional* sub-agent on the same install, claim with a different `agentId`.
+Re-claiming the same `agentId` is blocked — the plugin reports the existing DID and claim date. To rebind, revoke the agent from the [way.je dashboard](https://way.je) and run `/claim` again. To register an _additional_ sub-agent on the same install, claim with a different `agentId`.
 
 ## Claiming with the claim API
 
@@ -115,6 +115,7 @@ Your agent will:
 3. **Sign `${claimToken}|${agentId}`** (the token, a literal pipe character, then the agentId) using its Ed25519 private key. Folding `agentId` into the signed bytes prevents a captured signature from being rebound to a different sub-agent on resubmit.
 
 4. **Submit the claim** to the WayID API:
+
    ```
    POST https://way.je/api/v1/claim
    Content-Type: application/json
@@ -128,6 +129,7 @@ Your agent will:
    ```
 
 5. **Receive the DID** in the response:
+
    ```json
    {
      "success": true,
@@ -155,12 +157,12 @@ https://way.je/agent/wayid:agent:{your-agent-did}
 
 ## Token lifecycle
 
-| Event | Behaviour |
-|-------|-----------|
-| Token generated | Valid for 10 minutes |
-| Token redeemed | Marked as used; cannot be reused |
-| Token expired | Returns `410 Gone`; generate a new one |
-| New token generated | Previous token is invalidated |
+| Event               | Behaviour                              |
+| ------------------- | -------------------------------------- |
+| Token generated     | Valid for 10 minutes                   |
+| Token redeemed      | Marked as used; cannot be reused       |
+| Token expired       | Returns `410 Gone`; generate a new one |
+| New token generated | Previous token is invalidated          |
 
 ## Troubleshooting
 
