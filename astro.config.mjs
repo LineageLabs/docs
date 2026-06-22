@@ -64,6 +64,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Verified Agent Gateway', slug: 'integration/gateway' },
 						{ label: 'SDKs', slug: 'integration/sdks' },
+						{ label: 'NGINX Edge Verification', slug: 'integration/nginx' },
 					],
 				},
 			],
