@@ -5,10 +5,11 @@ description: Step-by-step guide to registering your AI agent with WayID.
 
 Claiming is the process of binding your AI agent's cryptographic identity to your verified WayID account. After claiming, your agent receives a WayID DID and a verifiable certificate.
 
-There are two ways to claim:
+There are three ways to claim:
 
-- **[The WayID OpenClaw plugin](#claiming-with-the-openclaw-plugin)** (recommended) — one command, all signing done in-process. The agent's private key never enters the model's context.
-- **[The direct claim API](#claiming-with-the-claim-api)** — for non-OpenClaw agents or custom integrations that sign and submit the claim themselves.
+- **[The WayID OpenClaw plugin](#claiming-with-the-openclaw-plugin)** (recommended for OpenClaw) — one command, all signing done in-process. The agent's private key never enters the model's context.
+- **[The WayID Hermes plugin](#claiming-with-the-hermes-plugin)** (recommended for Hermes) — the same in-process flow for the [Hermes Agent](/certificate/hermes/) runtime.
+- **[The direct claim API](#claiming-with-the-claim-api)** — for any other runtime or custom integration that signs and submits the claim itself.
 
 ## Prerequisites
 
@@ -92,9 +93,46 @@ From a Docker container hitting a local dev server, use `http://host.docker.inte
 
 Re-claiming the same `agentId` is blocked — the plugin reports the existing DID and claim date. To rebind, revoke the agent from the [way.je dashboard](https://way.je) and run `/claim` again. To register an _additional_ sub-agent on the same install, claim with a different `agentId`.
 
+## Claiming with the Hermes plugin
+
+The [WayID Hermes plugin](/certificate/hermes/) (`wayid-hermes`) is the recommended way to claim an agent running on [Hermes Agent](https://hermes-agent.nousresearch.com). It performs the exact same in-process flow as the OpenClaw plugin — generate keypair, sign `${claimToken}|${agentId}`, submit, persist — and never returns the private key to the model.
+
+### Step 1: Generate a claim token
+
+Same as above — generate a token at [way.je/claim](https://way.je/claim).
+
+### Step 2: Install and enable the plugin
+
+The plugin is a Python package on PyPI:
+
+```bash
+pip install wayid-hermes
+hermes plugins enable wayid
+```
+
+Hermes discovers the plugin via its `hermes_agent.plugins` entry-point on the next startup, and `hermes plugins enable wayid` adds it to the allow-list. This registers the same two slash commands — `/claim` and `/whoareyou` (with `/way` and `/who` as aliases) — and the `wayid_claim` and `wayid_whoareyou` tools.
+
+### Step 3: Run the claim command
+
+Paste the token into your agent and run:
+
+```
+/claim wayid-verify-a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
+```
+
+The keypair is stored at `~/.hermes/wayid/<agentId>/wayid-key.json` (private key, never read back into the conversation) and the DID record at `~/.hermes/wayid/<agentId>/wayid.json`. The `agentId` defaults to `main`. On success the agent returns the new DID and a link to finish your profile, exactly as the OpenClaw plugin does.
+
+### Pointing at a different WayID server
+
+The plugin defaults to `https://way.je`. To claim against a staging or self-hosted server, set the `WAYID_ISSUER` environment variable before starting Hermes (e.g. `WAYID_ISSUER=http://localhost:5173` for a local dev server).
+
+### Re-claiming
+
+As with OpenClaw, re-claiming the same `agentId` is blocked — the plugin reports the existing DID and claim date. Revoke the agent from the [way.je dashboard](https://way.je) and re-run `/claim`, or claim an additional sub-agent with a different `agentId`.
+
 ## Claiming with the claim API
 
-If your agent does not run the OpenClaw plugin (a non-OpenClaw runtime, or a custom integration), it can sign and submit the claim directly. The cryptographic handshake is identical — the plugin is simply an in-process implementation of these same steps.
+If your agent runs neither plugin (another runtime, or a custom integration), it can sign and submit the claim directly. The cryptographic handshake is identical — the plugins are simply in-process implementations of these same steps.
 
 ### Step 1: Generate a claim token
 

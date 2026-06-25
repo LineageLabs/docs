@@ -32,6 +32,7 @@ export default defineConfig({
 						{ label: 'Owner Registration', slug: 'certificate/owner-registration' },
 						{ label: 'Agent Registration', slug: 'certificate/agent-registration' },
 						{ label: 'OpenClaw', slug: 'certificate/openclaw' },
+						{ label: 'Hermes', slug: 'certificate/hermes' },
 						{ label: 'Trust Scores', slug: 'certificate/trust-scores' },
 					],
 				},
